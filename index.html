@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="Aplicación de chat con IA" />
+    <meta name="theme-color" content="#1976d2" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>Chat AI - Aplicación de conversación inteligente</title>
+    
+    <!-- Preconexión para mejorar el rendimiento -->
+    <link rel="preconnect" href="https://miik.pythonanywhere.com" />
+    <link rel="dns-prefetch" href="https://miik.pythonanywhere.com" />
+  </head>
+  <body>
+    <div id="root"></div>
+    
+    <!-- Carga optimizada del script -->
+    <script type="module" src="/src/main.jsx" async></script>
+    
+    <!-- Fallback para navegadores sin JavaScript -->
+    <noscript>
+      <style>
+        body { 
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+          font-family: Arial, sans-serif;
+          text-align: center;
+          padding: 20px;
+        }
+      </style>
+      <h1>Por favor, habilita JavaScript para usar esta aplicación.</h1>
+    </noscript>
+  </body>
+</html>
