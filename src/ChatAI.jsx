@@ -13,10 +13,12 @@ import {
 const ChatAI = () => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
+  const [conversationHistory, setConversationHistory] = useState(
+    JSON.parse(localStorage.getItem("conversationHistory")) || []
+  );
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Lista de saludos
   const greetings = [
     "¡Que empiece la vaina!",
     "¡Epa, chamo!",
@@ -25,17 +27,21 @@ const ChatAI = () => {
     "¡Qué fue, vale!",
   ];
 
-  // Función para obtener un saludo aleatorio
   const getRandomGreeting = () => {
     return greetings[Math.floor(Math.random() * greetings.length)];
   };
 
-  // Agregar saludo inicial
   useEffect(() => {
     if (messages.length === 0) {
-      setMessages([{ sender: "system", text: getRandomGreeting() }]);
+      const initialGreeting = { sender: "system", text: getRandomGreeting() };
+      setMessages([initialGreeting]);
+      setConversationHistory((prev) => [...prev, initialGreeting]);
     }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("conversationHistory", JSON.stringify(conversationHistory));
+  }, [conversationHistory]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -63,15 +69,25 @@ const ChatAI = () => {
         ];
       });
 
+      // Agregar mensaje del usuario al historial
+      setConversationHistory((prev) => [...prev, { sender: "user", text: input }]);
+
+      // Crear el prompt con el historial
+      const prompt = conversationHistory
+        .map((message) => `${message.sender}: ${message.text}`)
+        .join("\n") + `\nuser: ${input}`;
+
       // Llamada a la API
-      const res = await axios.post(
-        "https://miik.pythonanywhere.com/otprompt",
-        { text: input }
-      );
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: "ai", text: res.data }, // Respuesta de la API
-      ]);
+      const res = await axios.post("https://miik.pythonanywhere.com/otprompt", {
+        text: prompt,
+      });
+
+      const aiResponse = { sender: "ai", text: res.data };
+      
+      // Agregar respuesta de la API al estado y al historial
+      setMessages((prevMessages) => [...prevMessages, aiResponse]);
+      setConversationHistory((prev) => [...prev, aiResponse]);
+
       setInput("");
     } catch (error) {
       console.error("Error al enviar el mensaje:", error);
@@ -127,7 +143,6 @@ const ChatAI = () => {
       >
         {messages.map((message, index) =>
           message.sender === "system" ? (
-            // Typography exclusivo para el mensaje de bienvenida
             <Typography
               variant="soft"
               color="neutral"
@@ -145,7 +160,6 @@ const ChatAI = () => {
               {message.text}
             </Typography>
           ) : (
-            // Usar ReactMarkdown para renderizar el contenido en Markdown
             <Box
               key={index}
               sx={{
@@ -167,8 +181,8 @@ const ChatAI = () => {
                   p: ({ node, ...props }) => (
                     <p
                       style={{
-                        margin: 0, // Elimina márgenes innecesarios
-                        wordWrap: "break-word", // Ajusta el texto al ancho disponible
+                        margin: 0,
+                        wordWrap: "break-word",
                       }}
                       {...props}
                     />
@@ -208,7 +222,7 @@ const ChatAI = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           minRows={1}
-          maxRows={2} // ? editar esto para el limite de lineas
+          maxRows={2}
           sx={{
             flex: 1,
             resize: "none",
