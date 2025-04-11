@@ -1,40 +1,172 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="Aplicación de chat con IA" />
-    <meta name="theme-color" content="#1976d2" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <title>Chat AI - Aplicación de conversación inteligente</title>
+<head>
+  <link rel="shortcut icon" type="image/x-icon" href="logo.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wikos AI - Innovación Venezolana en Inteligencia Artificial</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Estilos generales */
+    body {
+      font-family: 'Baloo 2', cursive; /* Fuente Baloo aplicada */
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #f7faff, #bbdaf8); /* Gradiente del logo */
+      color: #333;
+    }
+    header {
+      background: #5294bb; /* Color del logo */
+      color: rgb(225, 229, 233);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+    header p {
+      margin: 5px 0;
+      font-size: 1.2rem;
+    }
+    .hero {
+      text-align: center;
+      padding: 50px 20px;
+    }
+    .hero h2 {
+      font-size: 2.5rem;
+      color: #5294bb; /* Color principal */
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    .hero button {
+      background: #5294bb;
+      color: white;
+      font-size: 1.2rem;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .hero button:hover {
+      background: #bbdaf8;
+      color: #333;
+    }
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 30px 20px;
+    }
+    .feature {
+      background: white;
+      margin: 15px;
+      padding: 20px;
+      width: 300px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .feature h3 {
+      margin-bottom: 15px;
+      font-size: 1.7rem;
+      color: #5294bb; /* Azul principal */
+    }
+    .feature p {
+      font-size: 1rem;
+      color: #555;
+    }
+    .cta-section {
+      background: #bbdaf8;
+      padding: 30px 20px;
+      text-align: center;
+    }
+    .cta-section h2 {
+      color: #5294bb;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    .cta-section p {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .cta-section button {
+      background: #5294bb;
+      color: white;
+      font-size: 1.2rem;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .cta-section button:hover {
+      background: white;
+      color: #5294bb;
+      border: 1px solid #5294bb;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #5294bb;
+      color: white;
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: #bbdaf8;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Wikos AI</h1>
+    <p>Innovación Venezolana en Inteligencia Artificial</p>
+  </header>
+
+  <!-- Sección de Asistente Personal -->
+  <section class="hero">
+    <h2>Wikos: Tu Asistente Personal de Inteligencia Artificial</h2>
+    <p>Transforma tus días con un asistente diseñado para facilitar tareas, responder preguntas y ofrecer ayuda instantánea.</p>
+    <button onclick="window.location.href='/wikosai/chat'" v>Prueba Wikos</button>
+  </section>
+  <h1 style="text-align: center; color: #5294bb; margin-bottom: -7px; margin-top: 50px; ">WikosAI para Empresas</h2>
+  <!-- Sección para Empresas -->
+  <section class="features">
     
-    <!-- Preconexión para mejorar el rendimiento -->
-    <link rel="preconnect" href="https://miik.pythonanywhere.com" />
-    <link rel="dns-prefetch" href="https://miik.pythonanywhere.com" />
-  </head>
-  <body>
-    <div id="root"></div>
-    
-    <!-- Carga optimizada del script -->
-    <script type="module" src="/src/main.jsx" async></script>
-    
-    <!-- Fallback para navegadores sin JavaScript -->
-    <noscript>
-      <style>
-        body { 
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-          margin: 0;
-          font-family: Arial, sans-serif;
-          text-align: center;
-          padding: 20px;
-        }
-      </style>
-      <h1>Por favor, habilita JavaScript para usar esta aplicación.</h1>
-    </noscript>
-  </body>
+    <div class="feature">
+      <h3>Automatización Inteligente</h3>
+      <p>Implementa procesos automatizados que mejoran la eficiencia y reducen costos operativos.</p>
+    </div>
+    <div class="feature">
+      <h3>Soporte Técnico Avanzado</h3>
+      <p>Ofrecemos soluciones confiables para resolver problemas técnicos de manera rápida y efectiva.</p>
+    </div>
+    <div class="feature">
+      <h3>Asistencia Empresarial 24/7</h3>
+      <p>Con nuestras herramientas basadas en IA, asegura la continuidad de tu negocio en todo momento.</p>
+    </div>
+  </section>
+
+  <!-- Llamado a la Acción -->
+  <section class="cta-section">
+    <h2>¿Listo para transformar tu experiencia?</h2>
+    <p>Contáctanos para saber cómo Wikos AI puede revolucionar tu empresa.</p>
+    <button onclick="window.location.href='https://www.instagram.com/wikos.ai/'">¡Contáctanos!</button>
+  </section>
+
+  <footer>
+    <p>© 2025 Wikos AI. Todos los derechos reservados.</p>
+  </footer>
+</body>
 </html>
