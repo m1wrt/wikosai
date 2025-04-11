@@ -58,33 +58,28 @@ const ChatAI = () => {
     try {
       setLoading(true);
 
-      // Eliminar saludo inicial (si existe) antes de agregar el mensaje del usuario
       setMessages((prevMessages) => {
         const updatedMessages = prevMessages.filter(
           (message) => message.sender !== "system"
         );
         return [
           ...updatedMessages,
-          { sender: "user", text: input }, // Agregar mensaje del usuario
+          { sender: "user", text: input },
         ];
       });
 
-      // Agregar mensaje del usuario al historial
       setConversationHistory((prev) => [...prev, { sender: "user", text: input }]);
 
-      // Crear el prompt con el historial
       const prompt = conversationHistory
         .map((message) => `${message.sender}: ${message.text}`)
         .join("\n") + `\nuser: ${input}`;
 
-      // Llamada a la API
       const res = await axios.post("https://miik.pythonanywhere.com/otprompt", {
         text: prompt,
       });
 
       const aiResponse = { sender: "ai", text: res.data };
-      
-      // Agregar respuesta de la API al estado y al historial
+
       setMessages((prevMessages) => [...prevMessages, aiResponse]);
       setConversationHistory((prev) => [...prev, aiResponse]);
 
@@ -98,7 +93,6 @@ const ChatAI = () => {
 
   return (
     <Sheet sx={{ height: "100vh", width: "100%", boxSizing: "border-box" }}>
-      {/* Título fijo */}
       <Box
         sx={{
           position: "fixed",
@@ -119,7 +113,6 @@ const ChatAI = () => {
         </Typography>
       </Box>
 
-      {/* Contenedor de mensajes */}
       <Box
         sx={{
           position: "fixed",
@@ -136,7 +129,7 @@ const ChatAI = () => {
           justifyContent:
             messages.length === 1 && messages[0].sender === "system"
               ? "center"
-              : "flex-start", // Centrar verticalmente solo el saludo
+              : "flex-start",
           gap: "0.5rem",
           boxSizing: "border-box",
         }}
@@ -197,7 +190,6 @@ const ChatAI = () => {
         <div ref={messagesEndRef} />
       </Box>
 
-      {/* Barra de entrada fija */}
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -220,7 +212,16 @@ const ChatAI = () => {
         <Textarea
           placeholder="Escribe tu mensaje..."
           value={input}
+          onFocus={() => {
+            window.scrollTo(0, document.body.scrollHeight);
+          }}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSubmit(e);
+            }
+          }}
           minRows={1}
           maxRows={2}
           sx={{
