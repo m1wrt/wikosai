@@ -11,13 +11,13 @@ import {
 } from "@mui/joy";
 
 const ChatAI = () => {
-  const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState(""); // Entrada del usuario
+  const [messages, setMessages] = useState([]); // Lista de mensajes en la conversación
   const [conversationHistory, setConversationHistory] = useState(
     JSON.parse(localStorage.getItem("conversationHistory")) || []
   );
-  const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef(null);
+  const [loading, setLoading] = useState(false); // Estado de carga
+  const messagesEndRef = useRef(null); // Referencia para desplazarse al final del chat
 
   const greetings = [
     "¡Que empiece la vaina!",
@@ -27,10 +27,12 @@ const ChatAI = () => {
     "¡Qué fue, vale!",
   ];
 
+  // Selección aleatoria de un saludo
   const getRandomGreeting = () => {
     return greetings[Math.floor(Math.random() * greetings.length)];
   };
 
+  // Inicializar el saludo si los mensajes están vacíos
   useEffect(() => {
     if (messages.length === 0) {
       const initialGreeting = { sender: "system", text: getRandomGreeting() };
@@ -39,10 +41,12 @@ const ChatAI = () => {
     }
   }, []);
 
+  // Guardar el historial en localStorage cada vez que cambia
   useEffect(() => {
     localStorage.setItem("conversationHistory", JSON.stringify(conversationHistory));
   }, [conversationHistory]);
 
+  // Desplazarse automáticamente al final del chat
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -53,44 +57,56 @@ const ChatAI = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim()) return; // Evita el envío de mensajes vacíos
 
     try {
       setLoading(true);
 
-      setMessages((prevMessages) => {
-        const updatedMessages = prevMessages.filter(
-          (message) => message.sender !== "system"
-        );
-        return [
-          ...updatedMessages,
-          { sender: "user", text: input },
-        ];
-      });
+      // Añadir el mensaje del usuario
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: "user", text: input },
+      ]);
+      setConversationHistory((prev) => [
+        ...prev,
+        { sender: "user", text: input },
+      ]);
 
-      setConversationHistory((prev) => [...prev, { sender: "user", text: input }]);
-
+      // Formatear el historial como prompt
       const prompt = conversationHistory
         .map((message) => `${message.sender}: ${message.text}`)
         .join("\n") + `\nuser: ${input}`;
 
+      // Solicitud al backend
       const res = await axios.post("https://miik.pythonanywhere.com/otprompt", {
         text: prompt,
       });
 
-      const aiResponse = { sender: "ai", text: res.data };
+      // Validar y agregar la respuesta del servidor
+      if (res.data && res.data.response) {
+        const aiResponse = { sender: "ai", text: res.data.response };
+        setMessages((prevMessages) => [...prevMessages, aiResponse]);
+        setConversationHistory((prev) => [...prev, aiResponse]);
+      } else {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { sender: "system", text: "No se recibió una respuesta válida del servidor." },
+        ]);
+      }
 
-      setMessages((prevMessages) => [...prevMessages, aiResponse]);
-      setConversationHistory((prev) => [...prev, aiResponse]);
-
-      setInput("");
+      setInput(""); // Limpiar la entrada
     } catch (error) {
       console.error("Error al enviar el mensaje:", error);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: "system", text: "Hubo un error al procesar tu solicitud. Intenta de nuevo más tarde." },
+      ]);
     } finally {
-      setLoading(false);
+      setLoading(false); // Desactivar el estado de carga
     }
   };
 
+  // Manejar la limpieza del historial
   const handleClearHistory = () => {
     setMessages([]);
     setConversationHistory([]);
@@ -190,23 +206,10 @@ const ChatAI = () => {
                 fontSize: "1rem",
                 lineHeight: 1.4,
                 maxWidth: "85%",
+                wordBreak: "break-word",
               }}
             >
-              <ReactMarkdown
-                components={{
-                  p: ({ node, ...props }) => (
-                    <p
-                      style={{
-                        margin: 0,
-                        wordWrap: "break-word",
-                      }}
-                      {...props}
-                    />
-                  ),
-                }}
-              >
-                {message.text}
-              </ReactMarkdown>
+              <ReactMarkdown>{message.text}</ReactMarkdown>
             </Box>
           )
         )}
@@ -233,32 +236,26 @@ const ChatAI = () => {
           boxSizing: "border-box",
         }}
       >
-      <Textarea
-        placeholder="Escribe tu mensaje..."
-        value={input}
-        onFocus={() => {
-          // Ajustar el scroll inmediatamente cuando se enfoca el campo de texto
-          setTimeout(() => {
-            window.scrollTo(0, document.body.scrollHeight);
-          }, 0); // Timeout para asegurar que el teclado se abra
-        }}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            handleSubmit(e);
-          }
-        }}
-        minRows={1}
-        maxRows={2}
-        sx={{
-          flex: 1,
-          resize: "none",
-          borderRadius: "8px",
-          padding: "0.5rem",
-          fontSize: "0.9rem",
-        }}
-      />
+        <Textarea
+          placeholder="Escribe tu mensaje..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSubmit(e);
+            }
+          }}
+          minRows={1}
+          maxRows={2}
+          sx={{
+            flex: 1,
+            resize: "none",
+            borderRadius: "8px",
+            padding: "0.5rem",
+            fontSize: "0.9rem",
+          }}
+        />
 
         <Button
           type="submit"
