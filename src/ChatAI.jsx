@@ -91,8 +91,15 @@ const ChatAI = () => {
     }
   };
 
+  const handleClearHistory = () => {
+    setMessages([]);
+    setConversationHistory([]);
+    localStorage.removeItem("conversationHistory");
+  };
+
   return (
     <Sheet sx={{ height: "100vh", width: "100%", boxSizing: "border-box" }}>
+      {/* Título fijo */}
       <Box
         sx={{
           position: "fixed",
@@ -111,8 +118,24 @@ const ChatAI = () => {
         <Typography level="h1" sx={{ fontSize: "1.3rem", fontWeight: "bold" }}>
           Chat AI
         </Typography>
+
+        {/* Botón para borrar historial */}
+        <Button
+          onClick={handleClearHistory}
+          variant="plain"
+          sx={{
+            position: "absolute",
+            top: "8px",
+            right: "8px",
+            fontSize: "0.8rem",
+            padding: "0.5rem",
+          }}
+        >
+          Borrar historial
+        </Button>
       </Box>
 
+      {/* Contenedor de mensajes */}
       <Box
         sx={{
           position: "fixed",
@@ -190,6 +213,7 @@ const ChatAI = () => {
         <div ref={messagesEndRef} />
       </Box>
 
+      {/* Barra de entrada fija */}
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -209,29 +233,33 @@ const ChatAI = () => {
           boxSizing: "border-box",
         }}
       >
-        <Textarea
-          placeholder="Escribe tu mensaje..."
-          value={input}
-          onFocus={() => {
+      <Textarea
+        placeholder="Escribe tu mensaje..."
+        value={input}
+        onFocus={() => {
+          // Ajustar el scroll inmediatamente cuando se enfoca el campo de texto
+          setTimeout(() => {
             window.scrollTo(0, document.body.scrollHeight);
-          }}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              handleSubmit(e);
-            }
-          }}
-          minRows={1}
-          maxRows={2}
-          sx={{
-            flex: 1,
-            resize: "none",
-            borderRadius: "8px",
-            padding: "0.5rem",
-            fontSize: "0.9rem",
-          }}
-        />
+          }, 0); // Timeout para asegurar que el teclado se abra
+        }}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSubmit(e);
+          }
+        }}
+        minRows={1}
+        maxRows={2}
+        sx={{
+          flex: 1,
+          resize: "none",
+          borderRadius: "8px",
+          padding: "0.5rem",
+          fontSize: "0.9rem",
+        }}
+      />
+
         <Button
           type="submit"
           disabled={loading}
