@@ -9,41 +9,48 @@
   <style>
     /* Estilos generales */
     body {
-      font-family: 'Baloo 2', cursive; /* Fuente Baloo aplicada */
+      font-family: 'Baloo 2', cursive;
       margin: 0;
       padding: 0;
-      background: linear-gradient(to bottom, #f7faff, #bbdaf8); /* Gradiente del logo */
+      background: linear-gradient(to bottom, #f7faff, #bbdaf8);
       color: #333;
     }
+
     header {
-      background: #5294bb; /* Color del logo */
+      background: #5294bb;
       color: rgb(225, 229, 233);
       padding: 20px;
       text-align: center;
       box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
     }
+
     header h1 {
       margin: 0;
       font-size: 2.5rem;
       font-weight: bold;
     }
+
     header p {
       margin: 5px 0;
       font-size: 1.2rem;
     }
+
     .hero {
       text-align: center;
       padding: 50px 20px;
     }
+
     .hero h2 {
       font-size: 2.5rem;
-      color: #5294bb; /* Color principal */
+      color: #5294bb;
       margin-bottom: 20px;
     }
+
     .hero p {
       font-size: 1.2rem;
       margin-bottom: 30px;
     }
+
     .hero button {
       background: #5294bb;
       color: white;
@@ -54,16 +61,19 @@
       cursor: pointer;
       transition: 0.3s;
     }
+
     .hero button:hover {
       background: #bbdaf8;
       color: #333;
     }
+
     .features {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       padding: 30px 20px;
     }
+
     .feature {
       background: white;
       margin: 15px;
@@ -73,30 +83,36 @@
       box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
+
     .feature h3 {
       margin-bottom: 15px;
       font-size: 1.7rem;
-      color: #5294bb; /* Azul principal */
+      color: #5294bb;
     }
+
     .feature p {
       font-size: 1rem;
       color: #555;
     }
+
     .cta-section {
       background: #bbdaf8;
       padding: 30px 20px;
       text-align: center;
     }
+
     .cta-section h2 {
       color: #5294bb;
       font-size: 2rem;
       margin-bottom: 10px;
     }
+
     .cta-section p {
       font-size: 1.1rem;
       margin-bottom: 20px;
       color: #333;
     }
+
     .cta-section button {
       background: #5294bb;
       color: white;
@@ -107,11 +123,13 @@
       cursor: pointer;
       transition: 0.3s;
     }
+
     .cta-section button:hover {
       background: white;
       color: #5294bb;
       border: 1px solid #5294bb;
     }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -119,12 +137,82 @@
       color: white;
       font-size: 0.9rem;
     }
+
     footer a {
       color: #bbdaf8;
       text-decoration: none;
     }
+
     footer a:hover {
       text-decoration: underline;
+    }
+
+    /* Estilos adicionales para el botón flotante y el chat */
+    #chat-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    #chat-button img {
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+    }
+
+    #chat-container {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 90%;
+      max-width: 400px;
+      height: 500px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      display: none;
+      z-index: 1001;
+      overflow: hidden; /* Para mantener el diseño limpio */
+    }
+
+    #chat-container iframe {
+      width: 100%;
+      height: calc(100% - 40px);
+      border: none;
+    }
+
+    #chat-close {
+      background: #ff5c5c;
+      color: white;
+      font-size: 1rem;
+      border: none;
+      border-radius: 0 10px 0 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      cursor: pointer;
+      padding: 5px 10px;
+      z-index: 1002;
+      transition: background 0.3s;
+    }
+
+    #chat-close:hover {
+      background: #e04e4e;
+    }
+
+    /* Estilo para el fondo desenfocado */
+    #blur-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      display: none;
     }
   </style>
 </head>
@@ -133,17 +221,13 @@
     <h1>Wikos AI</h1>
     <p>Innovación Venezolana en Inteligencia Artificial</p>
   </header>
-
-  <!-- Sección de Asistente Personal -->
   <section class="hero">
     <h2>Wikos: Tu Asistente Personal de Inteligencia Artificial</h2>
     <p>Transforma tus días con un asistente diseñado para facilitar tareas, responder preguntas y ofrecer ayuda instantánea.</p>
-    <button onclick="window.location.href='/wikosai/chat'" v>Prueba Wikos</button>
+    <button onclick="window.location.href='/wikosai/chat'">Prueba Wikos</button>
   </section>
-  <h1 style="text-align: center; color: #5294bb; margin-bottom: -7px; margin-top: 50px; ">WikosAI para Empresas</h2>
-  <!-- Sección para Empresas -->
+  <h1 style="text-align: center; color: #5294bb; margin-bottom: -7px; margin-top: 50px;">WikosAI para Empresas</h1>
   <section class="features">
-    
     <div class="feature">
       <h3>Automatización Inteligente</h3>
       <p>Implementa procesos automatizados que mejoran la eficiencia y reducen costos operativos.</p>
@@ -157,16 +241,32 @@
       <p>Con nuestras herramientas basadas en IA, asegura la continuidad de tu negocio en todo momento.</p>
     </div>
   </section>
-
-  <!-- Llamado a la Acción -->
   <section class="cta-section">
     <h2>¿Listo para transformar tu experiencia?</h2>
     <p>Contáctanos para saber cómo Wikos AI puede revolucionar tu empresa.</p>
     <button onclick="window.location.href='https://www.instagram.com/wikos.ai/'">¡Contáctanos!</button>
   </section>
-
+  <div id="blur-background"></div>
+  <div id="chat-button" onclick="toggleChat()"> <img src="mei.png" alt="Chat"> </div>
+  <div id="chat-container">
+    <button id="chat-close" onclick="toggleChat()">X</button>
+    <iframe id="chat-iframe" src="mei.html"></iframe>
+  </div>
   <footer>
     <p>© 2025 Wikos AI. Todos los derechos reservados.</p>
   </footer>
+  <script>
+    function toggleChat() {
+      const container = document.getElementById("chat-container");
+      const blurBackground = document.getElementById("blur-background");
+      if (container.style.display === "none" || container.style.display === "") {
+        container.style.display = "block";
+        blurBackground.style.display = "block";
+      } else {
+        container.style.display = "none";
+        blurBackground.style.display = "none";
+      }
+    }
+  </script>
 </body>
 </html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="Aplicación de chat con IA" />
+    <meta name="theme-color" content="#1976d2" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>Chat AI - Aplicación de conversación inteligente</title>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f9; /* Fondo neutro */
+      }
+
+      /* Bloquear el scroll */
+      .no-scroll {
+        overflow: hidden;
+      }
+
+      /* Contenedor principal optimizado */
+      .iframe-container {
+        margin: 0;
+        padding: 0;
+        height: 100vh; /* Toda la altura de la ventana */
+        width: 100vw; /* Todo el ancho */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 12px; /* Bordes redondeados */
+        background-color: white;
+      }
+
+      /* Estilo del iframe */
+      iframe {
+        flex: 1;
+        width: 100%; /* Ocupa todo el espacio disponible */
+        height: 100%;
+        border: none; /* Sin bordes visibles */
+        border-radius: 12px; /* Coincide con el contenedor */
+      }
+
+      /* Estilo para la "X" */
+      .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 8px 12px;
+        cursor: pointer;
+        background-color: #e63946;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        z-index: 1000; /* Asegurar que esté encima del iframe */
+      }
+
+      .close-button:hover {
+        background-color: #d62828;
+      }
+
+      /* Mensaje para navegadores sin JS */
+      noscript {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-size: 18px;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <!-- Botón para cerrar -->
+
+      <!-- Contenedor del iframe -->
+      <div class="iframe-container">
+        <iframe src="mei.html" title="Chat AI"></iframe>
+      </div>
+    </div>
+
+    <!-- Carga optimizada del script -->
+    <script type="module" src="/src/mei_main.jsx" async></script>
+
+    <script>
+      // Función para bloquear/desbloquear el scroll
+      function toggleAssistant(open) {
+        const body = document.querySelector('body');
+        if (open) {
+          body.classList.add('no-scroll');
+        } else {
+          body.classList.remove('no-scroll');
+        }
+      }
+
+      // Función para cerrar el asistente
+      function closeAssistant() {
+        const assistant = document.getElementById('root');
+        assistant.style.display = 'none'; // Oculta el asistente
+        toggleAssistant(false); // Desbloquea el scroll
+      }
+
+      // Simulación de apertura del asistente
+      function openAssistant() {
+        const assistant = document.getElementById('root');
+        assistant.style.display = 'block'; // Muestra el asistente
+        toggleAssistant(true); // Bloquea el scroll
+      }
+    </script>
+
+    <!-- Fallback para navegadores sin JavaScript -->
+    <noscript>
+      <style>
+        body { 
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+          font-family: Arial, sans-serif;
+          text-align: center;
+          padding: 20px;
+        }
+      </style>
+      <h1>Por favor, habilita JavaScript para usar esta aplicación.</h1>
+    </noscript>
+  </body>
+</html>
