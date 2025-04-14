@@ -4,13 +4,13 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/wikosai/',
+  base: '/wikosai/', // Asegúrate de que coincida con el nombre del repositorio
   build: {
     rollupOptions: {
       input: {
-        main: 'index.html',
-        mei: 'mei.html',
-        wikos: 'chat.html',
+        main: '/index.html', // Página principal
+        mei: '/mei.html',    // Página Mei
+        wikos: '/chat.html', // Página Chat
       },
     },
   },
