@@ -9,7 +9,6 @@ import {
   Box,
   CircularProgress,
 } from "@mui/joy";
-
 const ChatAI = () => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
