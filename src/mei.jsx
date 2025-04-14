@@ -200,7 +200,7 @@ const ChatAI = () => {
       {message.sender === "ai" && (
         <Box
           component="img"
-          src="logo.png" // Ruta de la imagen del bot
+          src="mei.png" // Ruta de la imagen del bot
           alt="Bot"
           sx={{
             width: "40px",
