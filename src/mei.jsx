@@ -14,7 +14,7 @@ const ChatAI = () => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [conversationHistory, setConversationHistory] = useState(
-    JSON.parse(localStorage.getItem("conversationHistory")) || []
+    JSON.parse(sessionStorage.getItem("conversationHistory")) || []
   );
   const [loading, setLoading] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
@@ -37,7 +37,7 @@ const ChatAI = () => {
   }, [conversationHistory.length]);
 
   useEffect(() => {
-    localStorage.setItem("conversationHistory", JSON.stringify(conversationHistory));
+    sessionStorage.setItem("conversationHistory", JSON.stringify(conversationHistory));
   }, [conversationHistory]);
 
   const scrollToBottom = () => {
@@ -63,7 +63,7 @@ const ChatAI = () => {
       const prompt = conversationHistory
         .map(message => `${message.sender}: ${message.text}`)
         .join("\n") + `\nuser: ${input}`;
-        // ! Esto hay que cambiarlo al nombre del asistente de ia (No sé si se llamará mei)
+      // ? Solicitud de mei
       const res = await axios.post("https://miik.pythonanywhere.com/mei_assistant", {
         text: prompt,
       });
@@ -92,7 +92,7 @@ const ChatAI = () => {
     setMessages([]);
     setConversationHistory([]);
     setShowWelcome(true);
-    localStorage.removeItem("conversationHistory");
+    sessionStorage.removeItem("conversationHistory");
   };
 
   // Estilos para los mensajes
@@ -158,7 +158,7 @@ const ChatAI = () => {
             borderRadius: "16px",
           }}
         >
-          Nuevo Chat
+          Borrar historial
         </Button>
       </Box>
 
@@ -184,54 +184,54 @@ const ChatAI = () => {
           </Typography>
         )}
 
-{messages
-  .filter(m => !showWelcome || m.sender !== "system")
-  .map((message, index) => (
-    <Box
-      key={index}
-      sx={{
-        display: "flex",
-        alignItems: "flex-start",
-        justifyContent: message.sender === "user" ? "flex-end" : "flex-start",
-        gap: "0.5rem", // Espaciado entre la imagen y el mensaje
-      }}
-    >
-      {/* Mostrar imagen solo para mensajes del bot */}
-      {message.sender === "ai" && (
-        <Box
-          component="img"
-          src="mei.png" // Ruta de la imagen del bot
-          alt="Bot"
-          sx={{
-            width: "40px",
-            height: "40px",
-            borderRadius: "50%", // Hacer la imagen circular
-            objectFit: "cover",
-          }}
-        />
-      )}
+        {messages
+          .filter(m => !showWelcome || m.sender !== "system")
+          .map((message, index) => (
+            <Box
+              key={index}
+              sx={{
+                display: "flex",
+                alignItems: "flex-start",
+                justifyContent: message.sender === "user" ? "flex-end" : "flex-start",
+                gap: "0.5rem", // Espaciado entre la imagen y el mensaje
+              }}
+            >
+              {/* Mostrar imagen solo para mensajes del bot */}
+              {message.sender === "ai" && (
+                <Box
+                  component="img"
+                  src="mei.png" // Ruta de la imagen del bot
+                  alt="Bot"
+                  sx={{
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "50%", // Hacer la imagen circular
+                    objectFit: "cover",
+                  }}
+                />
+              )}
 
-      {/* Contenedor del mensaje */}
-      <Box
-        sx={{
-          alignSelf:
-            message.sender === "user" ? "flex-end" : "flex-start",
-          bgcolor:
-            message.sender === "user" ? "primary.500" : "neutral.300",
-          color: message.sender === "user" ? "white" : "text.primary",
-          padding: "0.3rem 0.5rem", // Reduce el padding para hacerlo más compacto
-          borderRadius: "12px",
-          boxShadow: "sm",
-          fontSize: "0.95rem",
-          lineHeight: 1.2, // Reduce el espacio entre líneas
-          maxWidth: "85%",
-          minHeight: "1rem", // Reduce la altura mínima del mensaje
-        }}
-      >
-        <ReactMarkdown>{message.text}</ReactMarkdown>
-      </Box>
-    </Box>
-  ))}
+              {/* Contenedor del mensaje */}
+              <Box
+                sx={{
+                  alignSelf:
+                    message.sender === "user" ? "flex-end" : "flex-start",
+                  bgcolor:
+                    message.sender === "user" ? "primary.500" : "neutral.300",
+                  color: message.sender === "user" ? "white" : "text.primary",
+                  padding: "0.3rem 0.5rem", // Reduce el padding para hacerlo más compacto
+                  borderRadius: "12px",
+                  boxShadow: "sm",
+                  fontSize: "0.95rem",
+                  lineHeight: 1.2, // Reduce el espacio entre líneas
+                  maxWidth: "85%",
+                  minHeight: "1rem", // Reduce la altura mínima del mensaje
+                }}
+              >
+                <ReactMarkdown>{message.text}</ReactMarkdown>
+              </Box>
+            </Box>
+          ))}
         <div ref={messagesEndRef} />
       </Box>
 

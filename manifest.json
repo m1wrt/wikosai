@@ -1,0 +1,22 @@
+{
+    "name": "Chat AI",
+    "short_name": "ChatAI",
+    "description": "Una aplicación de chat impulsada por inteligencia artificial.",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#f4f4f9",
+    "theme_color": "#1976d2",
+    "icons": [
+      {
+        "src": "/vite.svg",
+        "sizes": "192x192",
+        "type": "image/svg+xml"
+      },
+      {
+        "src": "/apple-touch-icon.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  
